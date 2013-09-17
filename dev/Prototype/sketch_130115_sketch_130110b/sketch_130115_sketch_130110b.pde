@@ -6,6 +6,8 @@ Serial myPort;
 boolean firstContactDone = false;
 String typing = "";
 String PD = "PD";
+String lines;
+String php;
 
 boolean offset = true;
 
@@ -17,6 +19,10 @@ void setup() {
 println(Serial.list());
   String portName = Serial.list()[8];
   myPort = new Serial(this, portName, 9600);
+  
+  
+
+
 }
 
 
@@ -27,6 +33,10 @@ String[] lines = loadStrings("file.txt");
 println("there are " + lines.length + " lines");
 println(lines);
 
+
+String[] php = loadStrings("http://localhost:8888/sketch_130917a/template/db.php?id=1");
+fill(0);
+text(php[0],10,100);
 
 
 }
@@ -49,8 +59,18 @@ void keyReleased() {
       myPort.write(RETURN);
       break;
       default:
+      
+      String lines[] = loadStrings("http://localhost:8888/sketch_130917a/template/db.php");
+
+println("there are " + lines.length + " lines");
+for (int i = 0 ; i < lines.length; i++) {
+  println(lines[i]);
+}
+
+println(lines[0]);
+      
       typing += key;
-      myPort.write(typing);
+      myPort.write(lines[0]);
     }
   }
 
