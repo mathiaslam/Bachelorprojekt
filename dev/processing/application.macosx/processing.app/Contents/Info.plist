@@ -3,7 +3,7 @@
 <plist version="0.9">
   <dict>
     <key>CFBundleName</key>
-    <string>index</string>
+    <string>processing</string>
     <key>CFBundleVersion</key>
     <string>1.0</string>
     <key>CFBundleAllowMixedLocalizations</key>
@@ -21,7 +21,7 @@
     <key>CFBundleIconFile</key>
     <string>sketch.icns</string>
     <key>CFBundleIdentifier</key> 
-    <string>index</string>
+    <string>processing</string>
 
     <!-- http://developer.apple.com/documentation/MacOSX/Conceptual/BPRuntimeConfig/Articles/PListKeys.html#//apple_ref/doc/uid/20001431-113616 -->
     <key>LSUIPresentationMode</key>
@@ -39,7 +39,7 @@
       <string></string>
 
       <key>MainClass</key>
-      <string>index</string>
+      <string>processing</string>
 
       <!-- We don't support Java 7 on OS X. 
 	   Using it will break lots of things. -->
@@ -47,7 +47,7 @@
       <string>1.6*</string>
 
       <key>ClassPath</key>
-      <string>$JAVAROOT/index.jar:$JAVAROOT/core.jar:$JAVAROOT/jogl-all.jar:$JAVAROOT/gluegen-rt.jar:$JAVAROOT/jogl-all-natives-macosx-universal.jar:$JAVAROOT/gluegen-rt-natives-macosx-universal.jar:$JAVAROOT/BezierSQLib.jar:$JAVAROOT/mysql-connector-java-3.1.14-bin.jar:$JAVAROOT/postgresql-9.2-1002.jdbc3.jar:$JAVAROOT/sqlite-jdbc-3.7.2.jar:$JAVAROOT/RXTXcomm.jar:$JAVAROOT/serial.jar</string>
+      <string>$JAVAROOT/processing.jar:$JAVAROOT/core.jar:$JAVAROOT/jogl-all.jar:$JAVAROOT/gluegen-rt.jar:$JAVAROOT/jogl-all-natives-macosx-universal.jar:$JAVAROOT/gluegen-rt-natives-macosx-universal.jar:$JAVAROOT/BezierSQLib.jar:$JAVAROOT/mysql-connector-java-3.1.14-bin.jar:$JAVAROOT/postgresql-9.2-1002.jdbc3.jar:$JAVAROOT/sqlite-jdbc-3.7.2.jar:$JAVAROOT/RXTXcomm.jar:$JAVAROOT/serial.jar</string>
 
       <!-- http://developer.apple.com/releasenotes/Java/java141/system_properties/chapter_4_section_1.html#//apple_ref/doc/uid/TP30000285 -->
       <key>Properties</key>

@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-public class index extends PApplet {
+public class processing extends PApplet {
 
 
 
@@ -31,6 +31,7 @@ PrintWriter output;
 PFont font;
 String typedText = "";
 Timer refresh;
+StringList blacklist;
 
 public void setup()
 {
@@ -52,6 +53,7 @@ public void setup()
   msql = new MySQL( this, "localhost:8889", database, user, pass );
   msql.connect();
   myPort.write("LBTyping");
+  blacklist = new StringList();
 }
 
 public void draw()
@@ -66,9 +68,11 @@ public void draw()
   rect(23, 23, 1395, 855);
 
   textFont(font, 10);
-  text(typedText+(frameCount/10 % 2 == 0 ? "_" : ""), 35, 45);
+  fill(255);
+  text(typedText+(frameCount/10 % 2 == 0 ? "_" : ""), 45, 860);
   printWord();
   showTopBlackwords();
+  lastWords();
 }
 
 public void keyReleased() {
@@ -103,6 +107,18 @@ public void printWord() {
     //String foundWord = "Hosenkacker";
     int foundWordLength = foundWord.length();
     msql.query("SELECT word FROM `blacklist` WHERE word = '"+foundWord+"' AND hidden_until > DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)");
+
+    int blacklistSize = blacklist.size();
+    if (blacklistSize > 10) {
+      blacklist.remove(0);
+      blacklist.append(foundWord);
+    } 
+    else {
+      blacklist.append(foundWord);
+    }
+    
+    println(blacklist);
+    
     if (msql.next()) {
       println( "number of rows ####: " + foundWord );
       myPort.write(foundWord);
@@ -126,10 +142,11 @@ public void printWord() {
       myPort.write(TAB);
       myPort.write(RETURN);
     }
-
     refresh.start();
   }
 }
+
+
 
 public void saveWord() {
   msql.query("SELECT word FROM `blacklist` WHERE word = '"+typedText+"'");
@@ -153,16 +170,24 @@ public void saveWord() {
 }
 
 public void showTopBlackwords() {
-  StringList blackwords;
   fill(255);
   text("Last typed Blackwords", 45, 60);
-  blackwords = new StringList();
   msql.query("SELECT word FROM blacklist ORDER BY id DESC LIMIT 10");
   int i = 0;
-    while (msql.next ()) {
+  while (msql.next ()) {
     String word = msql.getString(1);
     text(word, 45, 85+i*20);
     i++;
+  }
+}
+
+public void lastWords() {
+  fill(255);
+  text("Last words from Database", 200, 60);
+  for (int i=0; i<blacklist.size(); i++) {
+    String blackword = blacklist.get(i);
+
+    text(blackword, 200, 85+i*20);
   }
 }
 
@@ -199,7 +224,7 @@ class Timer {
   
 }
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "--full-screen", "--bgcolor=#666666", "--hide-stop", "index" };
+    String[] appletArgs = new String[] { "--full-screen", "--bgcolor=#666666", "--hide-stop", "processing" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {

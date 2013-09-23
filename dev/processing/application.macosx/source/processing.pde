@@ -10,6 +10,7 @@ PrintWriter output;
 PFont font;
 String typedText = "";
 Timer refresh;
+StringList blacklist;
 
 void setup()
 {
@@ -31,6 +32,7 @@ void setup()
   msql = new MySQL( this, "localhost:8889", database, user, pass );
   msql.connect();
   myPort.write("LBTyping");
+  blacklist = new StringList();
 }
 
 void draw()
@@ -45,9 +47,11 @@ void draw()
   rect(23, 23, 1395, 855);
 
   textFont(font, 10);
-  text(typedText+(frameCount/10 % 2 == 0 ? "_" : ""), 35, 45);
+  fill(255);
+  text(typedText+(frameCount/10 % 2 == 0 ? "_" : ""), 45, 860);
   printWord();
   showTopBlackwords();
+  lastWords();
 }
 
 void keyReleased() {
@@ -82,6 +86,18 @@ void printWord() {
     //String foundWord = "Hosenkacker";
     int foundWordLength = foundWord.length();
     msql.query("SELECT word FROM `blacklist` WHERE word = '"+foundWord+"' AND hidden_until > DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)");
+
+    int blacklistSize = blacklist.size();
+    if (blacklistSize > 10) {
+      blacklist.remove(0);
+      blacklist.append(foundWord);
+    } 
+    else {
+      blacklist.append(foundWord);
+    }
+    
+    println(blacklist);
+    
     if (msql.next()) {
       println( "number of rows ####: " + foundWord );
       myPort.write(foundWord);
@@ -105,10 +121,11 @@ void printWord() {
       myPort.write(TAB);
       myPort.write(RETURN);
     }
-
     refresh.start();
   }
 }
+
+
 
 void saveWord() {
   msql.query("SELECT word FROM `blacklist` WHERE word = '"+typedText+"'");
@@ -132,16 +149,24 @@ void saveWord() {
 }
 
 void showTopBlackwords() {
-  StringList blackwords;
   fill(255);
   text("Last typed Blackwords", 45, 60);
-  blackwords = new StringList();
   msql.query("SELECT word FROM blacklist ORDER BY id DESC LIMIT 10");
   int i = 0;
-    while (msql.next ()) {
+  while (msql.next ()) {
     String word = msql.getString(1);
     text(word, 45, 85+i*20);
     i++;
+  }
+}
+
+void lastWords() {
+  fill(255);
+  text("Last words from Database", 200, 60);
+  for (int i=0; i<blacklist.size(); i++) {
+    String blackword = blacklist.get(i);
+
+    text(blackword, 200, 85+i*20);
   }
 }
 
