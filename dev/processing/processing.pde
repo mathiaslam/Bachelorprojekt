@@ -132,7 +132,7 @@ void printWord() {
 void saveWord() {
   msql.query("SELECT word FROM `blacklist` WHERE word = '"+typedText+"'");
   if (msql.next()) {
-    msql.query("UPDATE blacklist  SET hidden_until = ADDTIME(hidden_until, '2:00:00')");
+    msql.query("UPDATE blacklist SET count = count + 1, hidden_until = ADDTIME(hidden_until, '2:00:00') WHERE word = '"+typedText+"'");
   } 
   else {  
     Calendar calendar = Calendar.getInstance();
@@ -171,13 +171,13 @@ void lastWords() {
 
 void synonyms() {
   fill(255);
-  text("Synonyms", 385, 60);
+  text("Synonyms", 450, 60);
   msql.query("SELECT word FROM term WHERE synset_id='"+synid+"'");
   int s = 0;
   while (msql.next ()) {
     String syn = msql.getString(1);
     fill(255);
-    text(syn, 385, 85+s*20);
+    text(syn, 450, 85+s*20);
     s++;
   }
 }
