@@ -21,8 +21,8 @@ void setup()
   font = loadFont("Monaco-10.vlw");
 
   println(Serial.list());
-  String portName = Serial.list()[8];
-  myPort = new Serial(this, portName, 9600);
+//  String portName = Serial.list()[8];
+//  myPort = new Serial(this, portName, 9600);
 
   refresh = new Timer(1000);
   refresh.start();	
@@ -34,7 +34,7 @@ void setup()
 
   msql = new MySQL( this, "localhost:8889", database, user, pass );
   msql.connect();
-  myPort.write("LBTyping");
+//myPort.write("LBTyping");
   blacklist = new StringList();
   synonyms =  new StringList();
 }
@@ -100,29 +100,29 @@ void printWord() {
     }
 
     println(blacklist);
-    
+
     if (msql.next()) {
       println( "number of rows ####: " + foundWord );
-      myPort.write(foundWord);
+//      myPort.write(foundWord);
       for (int i=0; i < foundWordLength; i++) {         
-        myPort.write(TAB);
-        myPort.write(TAB);
-        myPort.write("#");
-        myPort.write(TAB);
-        myPort.write(TAB);
+//        myPort.write(TAB);
+//        myPort.write(TAB);
+//        myPort.write("#");
+//        myPort.write(TAB);
+//        myPort.write(TAB);
       }
-      myPort.write("ä");
-      myPort.write(TAB);
-      myPort.write(TAB);
-      myPort.write(RETURN);
+//      myPort.write("ä");
+//      myPort.write(TAB);
+//      myPort.write(TAB);
+//      myPort.write(RETURN);
     } 
     else {
       println( "number of rows: " + foundWord );
-      myPort.write(foundWord);
-      myPort.write("ä");
-      myPort.write(TAB);
-      myPort.write(TAB);
-      myPort.write(RETURN);
+//      myPort.write(foundWord);
+//      myPort.write("ä");
+//      myPort.write(TAB);
+//      myPort.write(TAB);
+//      myPort.write(RETURN);
     }
     refresh.start();
   }
@@ -183,32 +183,29 @@ void synonyms() {
   }
 }
 
-void blackTimer(){
-fill(255);
-text("Blackword Timer", 800, 60);
-
-
-     
-    msql.query("SELECT hidden_until FROM blacklist LIMIT 10 ");
-  
-    msql.next();
+void blackTimer() {  
+  fill(255);
+  text("Blackword Timer", 800, 60);
+  msql.query("SELECT hidden_until FROM blacklist WHERE hidden_until > current_timestamp LIMIT 10 ");
+  int s = 0;
+  while (msql.next ()) {
     String hidden_untiltime= msql.getString(1);
 
     Calendar calendar = Calendar.getInstance();
     Date dt = calendar.getTime();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-   String currentTime = sdf.format(dt);
-      
-     String dateStart = currentTime; 
-     String dateStop = hidden_untiltime;
+    String currentTime = sdf.format(dt);
 
-   
+    String dateStart = currentTime; 
+    String dateStop = hidden_untiltime;
+
+
     SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-                                                 
+
     Date d1 = null;
     Date d2 = null;
-  
- 
+
+
     try {
       d1 = format.parse(dateStart);
 
@@ -216,23 +213,27 @@ text("Blackword Timer", 800, 60);
 
       //in milliseconds
       long diff = d2.getTime() - d1.getTime();
- 
+      
+    //  if (diff > 0){
+
       long diffSeconds = diff / 1000 % 60;
       long diffMinutes = diff / (60 * 1000) % 60;
       long diffHours = diff / (60 * 60 * 1000) % 24;
-      long diffDays = diff / (24 * 60 * 60 * 1000) - 365;
-       
-      System.out.print(diffDays + " days, ");
-      System.out.print(diffHours + " hours, ");
-      System.out.print(diffMinutes + " minutes, ");
-      System.out.print(diffSeconds + " seconds.");
-      text(diffDays + " days, " + diffHours + " hours, " + diffMinutes + " minutes, " + diffSeconds + " seconds.", 800, 80);
-    } catch (Exception e) {
+      long diffDays = diff / (24 * 60 * 60 * 1000) ;
+
+//      System.out.print(diffDays + " days, ");
+//      System.out.print(diffHours + " hours, ");
+//      System.out.print(diffMinutes + " minutes, ");
+//      System.out.print(diffSeconds + " seconds.");
+      fill(255);
+      text(diffDays + " days, " + diffHours + " hours, " + diffMinutes + " minutes, " + diffSeconds + " seconds.", 800, 85+s*20);
+      s++;
+    //  }
+      //else {}
+    } 
+    catch (Exception e) {
       e.printStackTrace();
     }
-    
-    
-
-
-
+  }
 }
+
