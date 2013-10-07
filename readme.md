@@ -1,6 +1,7 @@
 ## information* Title: Instanz-Apparat
-* Category: Semesterarbeit* Student/s: Mathias Lam* Course Title: Schaubilder: Fabrizierte Information 
-* Lecturer/s: Dennis Paul* Year: SS 2013## text + images### deutsch 
+* Category: Semesterarbeit* Student: Mathias Lam* University: Hochschule für Künste Bremen* Course Title: Schaubilder: Fabrizierte Information 
+* Lecturer/s: Dennis Paul* Year: SS 2013
+## text + images### deutsch 
 ![instanz-apparat-01](instanz-apparat-01.jpg)
 Freud hat ein Strukturmodell der Psyche entwickelt. Dieses besteht aus drei Instanzen: dem Es, dem Ich und dem Über-Ich. Der Instanzapparat gibt dieses Strukturmodell in Form eines Experiments wieder. Er besteht aus drei Modulen, die jeweils die Eigenschaften einer Instanz wiedergeben und zusammen ein System bilden.![instanz-apparat-02](instanz-apparat-02.jpg)
 ######Modul 1: M-SE (SUPER-EGO)
